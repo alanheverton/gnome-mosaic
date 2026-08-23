@@ -60,10 +60,10 @@ depcheck:
 	fi
 
 enable:
-	gnome-extensions enable "gnome-mosaic@jardon.github.com"
+	gnome-extensions enable "$(UUID)"
 
 disable:
-	gnome-extensions disable "gnome-mosaic@jardon.github.com"
+	gnome-extensions disable "$(UUID)"
 
 listen:
 	journalctl -o cat -n 0 -f "$$(which gnome-shell)" | grep -v warning
