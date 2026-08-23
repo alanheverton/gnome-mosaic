@@ -3041,7 +3041,8 @@ export class Ext extends Ecs.System<ExtEvent> {
                 win.is_tilable(this)
             ) {
                 let id = actor.connect('first-frame', () => {
-                    this.auto_tiler?.auto_tile(this, win, this.init);
+                    if (win.actor_exists() && win.is_tilable(this))
+                        this.auto_tiler?.auto_tile(this, win, this.init);
                     grab_focus();
                     actor.disconnect(id);
                 });

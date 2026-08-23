@@ -179,7 +179,10 @@ export class ShellWindow {
                     this.workspace_changed();
                 }),
                 this.meta.connect('notify::wm-class', () => {
-                    this.wm_class_changed(ext);
+                    this.tilability_changed(ext);
+                }),
+                this.meta.connect('notify::skip-taskbar', () => {
+                    this.tilability_changed(ext);
                 }),
                 this.meta.connect('raised', () => {
                     this.window_raised(ext);
@@ -650,12 +653,17 @@ export class ShellWindow {
         }
     }
 
-    private wm_class_changed(ext: Ext) {
+    private tilability_changed(ext: Ext) {
         if (this.is_tilable(ext)) {
             ext.connect_window(this);
-            if (!this.meta.minimized) {
+            if (
+                !this.meta.minimized &&
+                !ext.auto_tiler?.attached.contains(this.entity)
+            ) {
                 ext.auto_tiler?.auto_tile(ext, this, ext.init);
             }
+        } else if (ext.auto_tiler?.attached.contains(this.entity)) {
+            ext.auto_tiler.detach_window(ext, this.entity);
         }
     }
 
