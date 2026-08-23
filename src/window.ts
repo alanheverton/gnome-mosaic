@@ -371,6 +371,8 @@ export class ShellWindow {
             // Only normal windows will be considered for tiling
             return (
                 this.meta.window_type == Meta.WindowType.NORMAL &&
+                // Hidden helper windows must not disturb the visible layout
+                !this.meta.is_skip_taskbar() &&
                 // Transient windows are most likely dialogs
                 !this.is_transient() &&
                 // If a window lacks a class, it's probably a web browser dialog

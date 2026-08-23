@@ -3196,7 +3196,7 @@ export default class MosaicExtension extends Extension {
                 ext.auto_tile_on(restored);
             }
             if (sysIndicator) sysIndicator.update();
-            return true;
+            return GLib.SOURCE_REMOVE;
         });
     }
     disable() {
