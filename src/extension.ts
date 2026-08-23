@@ -1191,9 +1191,8 @@ export class Ext extends Ecs.System<ExtEvent> {
 
                 if (fork) {
                     fork.area.array[0] += diff * 4;
-                    fork.area.array[1] += diff * 4;
                     fork.area.array[2] -= diff * 8;
-                    fork.area.array[3] -= diff * 8;
+                    fork.area.array[3] -= diff * 4;
 
                     this.auto_tiler.tile(this, fork, fork.area);
                 }
@@ -1709,9 +1708,8 @@ export class Ext extends Ecs.System<ExtEvent> {
                                 true,
                             ];
                             area.x += this.gap_outer;
-                            area.y += this.gap_outer;
                             area.width -= this.gap_outer * 2;
-                            area.height -= this.gap_outer * 2;
+                            area.height -= this.gap_outer;
                         } else if (attach_to) {
                             is_sibling = this.auto_tiler.windows_are_siblings(
                                 entity,

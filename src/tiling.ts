@@ -292,9 +292,9 @@ export class Tiler {
                     this.resize_hint.height = area.height;
 
                     let {x, y, width, height} = this.resize_hint;
-                    const wy = work_area.y + this.ext.gap_outer;
+                    const wy = work_area.y;
                     const wx = work_area.x + this.ext.gap_outer;
-                    const wh = work_area.height - this.ext.gap_outer * 2;
+                    const wh = work_area.height - this.ext.gap_outer;
                     const ww = work_area.width - this.ext.gap_outer * 2;
 
                     this.resize_up.visible = y > wy;
