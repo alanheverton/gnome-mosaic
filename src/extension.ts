@@ -3041,10 +3041,21 @@ export class Ext extends Ecs.System<ExtEvent> {
                 win.is_tilable(this)
             ) {
                 let id = actor.connect('first-frame', () => {
-                    if (win.actor_exists() && win.is_tilable(this))
-                        this.auto_tiler?.auto_tile(this, win, this.init);
-                    grab_focus();
                     actor.disconnect(id);
+
+                    const tile = () => {
+                        if (win.actor_exists() && win.is_tilable(this))
+                            this.auto_tiler?.auto_tile(this, win, this.init);
+                        grab_focus();
+                    };
+                    const wmClass = win.meta.get_wm_class() ?? '';
+
+                    if (/^(microsoft-edge|msedge-)/i.test(wmClass)) {
+                        GLib.timeout_add(GLib.PRIORITY_DEFAULT, 250, () => {
+                            tile();
+                            return GLib.SOURCE_REMOVE;
+                        });
+                    } else tile();
                 });
             } else {
                 grab_focus();
