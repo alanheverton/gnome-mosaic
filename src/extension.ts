@@ -3051,7 +3051,7 @@ export class Ext extends Ecs.System<ExtEvent> {
                     const wmClass = win.meta.get_wm_class() ?? '';
 
                     if (/^(microsoft-edge|msedge-)/i.test(wmClass)) {
-                        GLib.timeout_add(GLib.PRIORITY_DEFAULT, 250, () => {
+                        GLib.timeout_add(GLib.PRIORITY_DEFAULT, 750, () => {
                             tile();
                             return GLib.SOURCE_REMOVE;
                         });
