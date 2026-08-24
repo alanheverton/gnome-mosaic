@@ -340,11 +340,11 @@ export class ShellWindow {
 
     is_tilable(ext: Ext): boolean {
         let tile_checks = () => {
-            let wm_class = this.meta.get_wm_class();
+            const wm_class = this.meta.get_wm_class();
 
-            if (wm_class !== null && wm_class.trim().length === 0) {
-                wm_class = this.name(ext);
-            }
+            // Chromium creates short-lived normal windows with an empty class.
+            // Wait for notify::wm-class before considering them for tiling.
+            if (wm_class === null || wm_class.trim().length === 0) return false;
 
             const role = this.meta.get_role();
 
@@ -364,10 +364,7 @@ export class ShellWindow {
 
             // Blacklist any windows that happen to leak through our filter
             // Windows that are tagged ForceTile are considered tilable despite exemption
-            if (
-                wm_class !== null &&
-                ext.conf.window_shall_float(wm_class, this.title(ext))
-            ) {
+            if (ext.conf.window_shall_float(wm_class, this.title(ext))) {
                 return ext.contains_tag(this.entity, Tags.ForceTile);
             }
 
@@ -377,9 +374,7 @@ export class ShellWindow {
                 // Hidden helper windows must not disturb the visible layout
                 !this.meta.is_skip_taskbar() &&
                 // Transient windows are most likely dialogs
-                !this.is_transient() &&
-                // If a window lacks a class, it's probably a web browser dialog
-                wm_class !== null
+                !this.is_transient()
             );
         };
 
