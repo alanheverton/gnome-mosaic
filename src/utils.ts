@@ -5,13 +5,12 @@ import * as log from './log.js';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Meta from 'gi://Meta';
 import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 const {Ok, Err} = result;
 const {Error} = error;
 
 export function is_wayland(): boolean {
-    return Meta.is_wayland_compositor();
+    return (GLib as any).getenv('XDG_SESSION_TYPE') === 'wayland';
 }
 
 export function block_signal(object: GObject.Object, signal: SignalID) {
